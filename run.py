@@ -27,7 +27,7 @@ def splitLine(line):
     return result
 
 
-file = open('1831349.csv', 'r')
+file = open('1832465.csv', 'r')
 
 keys = splitLine(file.readline().strip())
 # keys = re.split('\,\S', keys)
@@ -45,7 +45,7 @@ for line in file:
     # print line
     # print len(line)
     today = {}
-    for i in range(35):
+    for i in range(len(line)):
 
         today[keys[i]] = line[i]
     # print today
@@ -87,11 +87,50 @@ for line in file:
 def returnTMAXForSorting(k):
     return dailyWeather[k]['TMAX']
 
-def getHottestDaysInList(listOfDates, count = 5):
-    return sorted(listOfDates, reverse = True, key = returnTMAXForSorting)[:count]
+def getExtremeDaysInList(listOfDates, hottest = True, count = 5):
+    return sorted(listOfDates, reverse = hottest, key = returnTMAXForSorting)[:count]
+#
+# for date in sorted(dailyWeather.keys(), key = returnTMAXForSorting, reverse = True)[:15]:
+#     print date + ": " + dailyWeather[date]['TMAX'] +"   " + dailyWeather[date]['DATE']
+def getDatesFromKey(key):
+    return filter(lambda x: key in x, dailyWeather.keys())
 
-for date in sorted(dailyWeather.keys(), key = returnTMAXForSorting, reverse = True)[:5]:
-    print date + ": " + dailyWeather[date]['TMAX'] +"   " + dailyWeather[date]['DATE']
+def getHottestDaysInYear(year, count = 5):
+    listOfDates = getDatesFromKey(year)
+    return getExtremeDaysInList(listOfDates, True, count)
 
+def getHottestDaysInYearAndMonth(year, month, count = 5):
+    dateString = year + '-' + month
+    listOfDates = getDatesFromKey(dateString)
+    return getExtremeDaysInList(listOfDates, True, count)
 
-print getHottestDaysInList(dailyWeather.keys())
+def getHottestDaysInMonthAcrossYears(month, count = 5):
+    dateString = '-' + month + '-'
+    listOfDates = getDatesFromKey(dateString)
+    return getExtremeDaysInList(listOfDates, True, count)
+
+def getColdestDaysInYear(year, count = 5):
+    listOfDates = getDatesFromKey(year)
+    return getExtremeDaysInList(listOfDates, False, count)
+
+def getColdestDaysInYearAndMonth(year, month, count = 5):
+    dateString = year + '-' + month
+    listOfDates = getDatesFromKey(dateString)
+    return getExtremeDaysInList(listOfDates, False, count)
+
+def getColdestDaysInMonthAcrossYears(month, count = 5):
+    dateString = '-' + month + '-'
+    listOfDates = getDatesFromKey(dateString)
+    return getExtremeDaysInList(listOfDates, False, count)
+
+def displayHighsFromListOfDates(listOfDates):
+    for date in listOfDates:
+        print date + ': ' + dailyWeather[date]['TMAX']
+
+# print displayHighsFromListOfDates(getHottestDaysInYear('2015'))
+# print displayHighsFromListOfDates(getHottestDaysInYearAndMonth('2016', '05'))
+# print displayHighsFromListOfDates(getHottestDaysInMonthAcrossYears('03'))
+
+print displayHighsFromListOfDates(getColdestDaysInYear('1982'))
+# print displayHighsFromListOfDates(getColdestDaysInYearAndMonth('2016', '05'))
+# print displayHighsFromListOfDates(getColdestDaysInMonthAcrossYears('03'))
