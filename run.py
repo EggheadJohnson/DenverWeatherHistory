@@ -1,5 +1,7 @@
 from random import choice
 import re
+import insert
+import sys
 
 def stripQuotes(string):
     return string.strip('"')
@@ -27,7 +29,7 @@ def splitLine(line):
     return result
 
 
-file = open('1832465.csv', 'r')
+file = open('data/1832465.csv', 'r')
 
 keys = splitLine(file.readline().strip())
 # keys = re.split('\,\S', keys)
@@ -53,7 +55,13 @@ for line in file:
 
     for key in today:
         if date not in dailyWeather:
-            dailyWeather[date] = {}
+            year, month, day = date.split('-')
+            dailyWeather[date] = {
+                'zipcode': 80238,
+                'year': year,
+                'month': month,
+                'day': day
+            }
         if key not in dailyWeather[date] or dailyWeather[date][key] == '':
             dailyWeather[date][key] = today[key]
     # if date == '2019-03-11':
@@ -131,6 +139,27 @@ def displayHighsFromListOfDates(listOfDates):
 # print displayHighsFromListOfDates(getHottestDaysInYearAndMonth('2016', '05'))
 # print displayHighsFromListOfDates(getHottestDaysInMonthAcrossYears('03'))
 
-print displayHighsFromListOfDates(getColdestDaysInYear('1982'))
+# print displayHighsFromListOfDates(getColdestDaysInYear('1982'))
 # print displayHighsFromListOfDates(getColdestDaysInYearAndMonth('2016', '05'))
 # print displayHighsFromListOfDates(getColdestDaysInMonthAcrossYears('03'))
+
+totalDays = len(dailyWeather.keys())
+separatorLength = totalDays/50
+i = 0
+
+errors = []
+
+for date in dailyWeather:
+    try:
+        insert.into_daily_histories(dailyWeather[date])
+    except:
+        errors.append(sys.exc_info()[1])
+        # print 'added error'
+        # print errors
+        # sys.exit()
+    i += 1
+    if i % separatorLength == 0:
+        sys.stdout.write("\r[{0}{1}]".format("."*(i/separatorLength), " "*(50-(i/separatorLength))))
+        sys.stdout.flush()
+
+print errors
