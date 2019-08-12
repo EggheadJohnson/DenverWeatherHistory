@@ -8,7 +8,7 @@ TABLES = {}
 TABLES['daily_histories'] = (
     "DROP TABLE IF EXISTS `daily_histories`;"
     "CREATE TABLE `daily_histories` ("
-    "  `date_id` int(11) NOT NULL AUTO_INCREMENT,"
+    # "  `date_id` int(11) NOT NULL AUTO_INCREMENT,"
     "  `date` varchar(15) NOT NULL,"
     "  `year` int,"
     "  `month` int,"
@@ -33,7 +33,7 @@ TABLES['daily_histories'] = (
     "  `wt05` varchar(15),"
     "  `wt06` varchar(15),"
     "  `wt11` varchar(15),"
-    "  PRIMARY KEY (`date_id`, `date`, `zipcode`)"
+    "  PRIMARY KEY (`date`, `zipcode`)"
     ") ENGINE=InnoDB")
 
 # "STATION","NAME","DATE","DAPR","MDPR","PRCP","SNOW","SNWD","TAVG","TMAX","TMIN","TOBS","WESD","WESF","WT01","WT03","WT04","WT05","WT06","WT11"

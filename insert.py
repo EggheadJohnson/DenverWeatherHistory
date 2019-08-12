@@ -2,7 +2,8 @@ import credentials
 import mysql.connector
 from mysql.connector import errorcode
 
-
+BREAKING_MISSES = ['TMAX', 'TMIN']
+OVERRIDE_MISSES = ['SNOW', 'SNWD', 'PRCP']
 
 def into_daily_histories(daily_history):
     creds = credentials.get()
@@ -12,13 +13,13 @@ def into_daily_histories(daily_history):
                                   database=creds['database'])
 
 
-    # for k in ['TMAX', 'TMIN']:
-    #     if daily_history[k] == '':
-    #         return
-    #
-    # for k in ['SNOW']:
-    #     if daily_history[k] == '':
-    #         daily_history[k] = 0.0
+    for k in BREAKING_MISSES:
+        if daily_history[k] == '':
+            return
+
+    for k in OVERRIDE_MISSES:
+        if daily_history[k] == '':
+            daily_history[k] = 0.0
 
     cursor = cnx.cursor()
     # prs = "INSERT INTO ping_result_summary (run_date, min, max, avg, mdev, total, loss, traceroute_dump) values ({run_date}, {min}, {max}, {avg}, {mdev}, {total}, {loss}, '{traceroute_dump}')".format(run_date=ping_results['run_date'])
