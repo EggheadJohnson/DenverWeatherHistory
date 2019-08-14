@@ -6,11 +6,58 @@ import insert
 import sys
 import sliceData
 
+options = [
+    'Load file',
+    'Exit',
+]
+
+print "Hi and welcome to this weather thing I built"
+
+selection = -1
+
+dailyWeather = {}
 dailyWeather = loadFile()
 
-slicer = sliceData.Slicer(dailyWeather)
+while selection != 'Exit':
+    if dailyWeather:
+        print "You have the data set " + dailyWeather['dataSet'] + " open"
+        if 'Slice data' not in options: options.insert(1, 'Slice data')
+    print "Please make a selection by number, letter, or full text"
+    for i, option in enumerate(options):
+        print "  " + str(i+1) + ": " + option
+    selection = raw_input(" Selection: ")
+    if selection.isdigit():
+        selection = int(selection) - 1
+        if selection >= len(options):
+            print "Invalid selection"
+        else:
+            selection = options[selection]
+    elif len(selection) == 1:
+        selection = selection.upper()
+        found = False
+        for option in options:
+            if option[0] == selection:
+                selection = option
+                found = True
+                break
+        if not found:
+            print "Invalid selection"
+    elif selection not in options:
+        print "Invalid selection"
 
-print slicer.displayHighsFromListOfDates(slicer.getHottestDaysInYear('2000'))
+    print "Your selection was " + str(selection)
+
+#
+#
+#
+#
+# dailyWeather = loadFile()
+#
+# slicer = sliceData.Slicer(dailyWeather)
+#
+# slicer.displayHighsFromListOfDates(slicer.getHottestDaysInYearAndMonth('2018', '08', 15))
+#
+#
 
 
 
