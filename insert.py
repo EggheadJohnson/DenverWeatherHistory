@@ -13,6 +13,7 @@ def into_daily_histories(daily_history):
                                   database=creds['database'])
 
 
+    # print daily_history.keys()
     for k in BREAKING_MISSES:
         if daily_history[k] == '':
             return
@@ -39,3 +40,13 @@ def into_daily_histories(daily_history):
     cnx.close()
 
     return lastrowid
+
+def station_history(station_history):
+    for date in station_history:
+        # print date
+        into_daily_histories(station_history[date])
+
+def all_data(weather_data):
+    for station in weather_data:
+        # print station
+        station_history(weather_data[station])

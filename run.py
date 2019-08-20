@@ -1,6 +1,7 @@
 from random import choice
 from os import listdir
-from openFile import loadFile
+from openFile import loadFile, selectFile
+from create_tables import drop_and_rewrite_tables
 import re
 import insert
 import sys
@@ -8,20 +9,20 @@ import sliceData
 
 options = [
     'Load file',
+    'Reset tables - caution this deletes all data',
     'Exit',
 ]
 
 print "Hi and welcome to this weather thing I built"
 
 selection = -1
-
 dailyWeather = {}
-dailyWeather = loadFile()
 
 while selection != 'Exit':
     if dailyWeather:
         print "You have the data set " + dailyWeather['dataSet'] + " open"
         if 'Slice data' not in options: options.insert(1, 'Slice data')
+        if 'Write data' not in options: options.insert(2, 'Write data')
     print "Please make a selection by number, letter, or full text"
     for i, option in enumerate(options):
         print "  " + str(i+1) + ": " + option
@@ -46,6 +47,22 @@ while selection != 'Exit':
         print "Invalid selection"
 
     print "Your selection was " + str(selection)
+
+    if selection == 'Load file':
+        dailyWeather = loadFile(selectFile())
+    elif selection == 'Slice data':
+        slicer = sliceData.Slicer(dailyWeather)
+    elif selection == 'Write data':
+        insert.all_data(dailyWeather['dailyWeather'])
+    elif selection == 'Reset tables - caution this deletes all data':
+        drop_and_rewrite_tables()
+
+
+
+
+
+
+
 
 #
 #

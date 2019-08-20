@@ -33,7 +33,7 @@ def listFiles():
         print "  " + str(i+1) + ": " + dataFile
     return dataFiles
 
-def loadFile():
+def selectFile():
     print "Make a selection, number or filename from below:"
     files = listFiles()
     fileOrNumber = raw_input("Selection: ")
@@ -42,6 +42,10 @@ def loadFile():
         fileName = files[number - 1]
     else:
         fileName = fileOrNumber
+    return fileName
+
+def loadFile(fileName):
+
     file = open('data/'+fileName)
     keys = splitLine(file.readline().strip())
 
@@ -58,18 +62,21 @@ def loadFile():
             today[keys[i]] = line[i]
         # print today
         date = today['DATE']
+        station = today['STATION']
 
         for key in today:
-            if date not in dailyWeather:
+            if station not in dailyWeather:
+                dailyWeather[station] = {}
+            if date not in dailyWeather[station]:
                 year, month, day = date.split('-')
-                dailyWeather[date] = {
-                    'zipcode': 80238,
-                    'year': year,
-                    'month': month,
-                    'day': day
+                dailyWeather[station][date] = {
+                  'zipcode': 80238,
+                  'year': year,
+                  'month': month,
+                  'day': day
                 }
-            if key not in dailyWeather[date] or dailyWeather[date][key] == '':
-                dailyWeather[date][key] = today[key]
+            if key not in dailyWeather[station][date] or dailyWeather[station][date][key] == '':
+                dailyWeather[station][date][key] = today[key]
     return {
         'dataSet': fileName,
         'dailyWeather': dailyWeather,
