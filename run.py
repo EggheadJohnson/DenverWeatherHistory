@@ -2,10 +2,12 @@ from random import choice
 from os import listdir
 from openFile import loadFile, selectFile
 from create_tables import drop_and_rewrite_tables
+from selectomatic import selectomatic
 import re
 import insert
 import sys
 import sliceData
+
 
 options = [
     'Load file',
@@ -23,35 +25,12 @@ while selection != 'Exit':
         print "You have the data set " + dailyWeather['dataSet'] + " open"
         if 'Slice data' not in options: options.insert(1, 'Slice data')
         if 'Write data' not in options: options.insert(2, 'Write data')
-    print "Please make a selection by number, letter, or full text"
-    for i, option in enumerate(options):
-        print "  " + str(i+1) + ": " + option
-    selection = raw_input(" Selection: ")
-    if selection.isdigit():
-        selection = int(selection) - 1
-        if selection >= len(options):
-            print "Invalid selection"
-        else:
-            selection = options[selection]
-    elif len(selection) == 1:
-        selection = selection.upper()
-        found = False
-        for option in options:
-            if option[0] == selection:
-                selection = option
-                found = True
-                break
-        if not found:
-            print "Invalid selection"
-    elif selection not in options:
-        print "Invalid selection"
-
-    print "Your selection was " + str(selection)
+    selection = selectomatic(options)
 
     if selection == 'Load file':
         dailyWeather = loadFile(selectFile())
     elif selection == 'Slice data':
-        slicer = sliceData.Slicer(dailyWeather)
+        sliceData.slicePicker(dailyWeather)
     elif selection == 'Write data':
         insert.all_data(dailyWeather['dailyWeather'])
     elif selection == 'Reset tables - caution this deletes all data':
