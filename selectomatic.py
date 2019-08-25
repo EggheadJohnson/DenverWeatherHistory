@@ -1,11 +1,15 @@
 import datetime
 
-def selectomatic(options):
+def selectomatic(options, optionalSummaries = {}):
     found = False
     while not found:
         print "Please make a selection by number, letter, or full text"
         for i, option in enumerate(options):
-            print "  " + str(i+1) + ": " + option
+            if option in optionalSummaries:
+                summary = optionalSummaries[option]
+            else:
+                summary = ''
+            print "  " + str(i+1) + ": " + option + " " + summary
         selection = raw_input(" Selection: ")
         if selection.isdigit():
             selection = int(selection) - 1

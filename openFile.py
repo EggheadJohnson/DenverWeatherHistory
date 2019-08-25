@@ -50,6 +50,7 @@ def loadFile(fileName):
     keys = splitLine(file.readline().strip())
 
     dailyWeather = {}
+    meta = {}
 
     for line in file:
         # line = removeQuotesFromLine(re.split('\,\S', line.strip()))
@@ -64,6 +65,21 @@ def loadFile(fileName):
         date = today['DATE']
         station = today['STATION']
 
+        if station not in meta:
+            meta[station] = {
+                'seen': 0,
+                'hadTmax': 0,
+            }
+
+        if 'earliest' not in meta[station] or date < meta[station]['earliest']:
+            meta[station]['earliest'] = date
+        if 'latest' not in meta[station] or date > meta[station]['latest']:
+            meta[station]['latest'] = date
+        meta[station]['seen'] += 1
+        if 'TMAX' in today and today['TMAX'] != '':
+            meta[station]['hadTmax'] += 1
+
+
         for key in today:
             if station not in dailyWeather:
                 dailyWeather[station] = {}
@@ -77,7 +93,14 @@ def loadFile(fileName):
                 }
             if key not in dailyWeather[station][date] or dailyWeather[station][date][key] == '':
                 dailyWeather[station][date][key] = today[key]
+
+    summaries = {}
+    for station in meta:
+        summaries[station] = '{} - {} {}'.format(meta[station]['earliest'], meta[station]['latest'], 100.*meta[station]['hadTmax']/meta[station]['seen'])
+
     return {
         'dataSet': fileName,
+        'meta': meta,
+        'summaries': summaries,
         'dailyWeather': dailyWeather,
     }
