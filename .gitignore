@@ -1,3 +1,4 @@
 credentials.py
 credentials.pyc
 *.pyc
+tmp.py
