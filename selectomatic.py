@@ -3,18 +3,18 @@ import datetime
 def selectomatic(options, optionalSummaries = {}):
     found = False
     while not found:
-        print "Please make a selection by number, letter, or full text"
+        print("Please make a selection by number, letter, or full text")
         for i, option in enumerate(options):
             if option in optionalSummaries:
                 summary = optionalSummaries[option]
             else:
                 summary = ''
-            print "  " + str(i+1) + ": " + option + " " + summary
-        selection = raw_input(" Selection: ")
+            print("  " + str(i+1) + ": " + option + " " + summary)
+        selection = input(" Selection: ")
         if selection.isdigit():
             selection = int(selection) - 1
             if selection >= len(options):
-                print "Invalid selection"
+                print("Invalid selection")
                 selection += 1
             else:
                 selection = options[selection]
@@ -28,12 +28,12 @@ def selectomatic(options, optionalSummaries = {}):
                     found = True
                     break
             if not found:
-                print "Invalid selection"
+                print("Invalid selection")
         elif selection not in options:
-            print "Invalid selection"
+            print("Invalid selection")
         elif selection in options:
             found = True
-        print "Your selection was " + str(selection)
+        print("Your selection was " + str(selection))
     return selection
 
 def selectMonth():
@@ -44,7 +44,7 @@ def selectMonth():
 def selectYear(oldest = 1980):
     year = -1
     while not validYear(year, oldest):
-        year = raw_input(" Select year: " )
+        year = input(" Select year: " )
     return year
 
 
