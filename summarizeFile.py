@@ -2,11 +2,11 @@ import pandas as pd, argparse, pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--input', help='The shorter of the two rolling averages', default='data/Denver20192020.csv')
+parser.add_argument('--input', help='The shorter of the two rolling averages', default='data/Denver20162020USW00023062.csv')
 
 args = parser.parse_args()
 
-def loadPandasDF(file_name = 'data/Denver20192020.csv'):
+def loadPandasDF(file_name = 'data/Denver20162020USW00023062.csv'):
     df = pd.read_csv(file_name)
     return df
 
