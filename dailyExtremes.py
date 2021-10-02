@@ -4,7 +4,7 @@ from datetime import date, timedelta
 
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--input', help='The file to open as a source', default='data/Denver20192020.csv')
+parser.add_argument('--input', help='The file to open as a source', default='data/Denver20162020USW00023062.csv')
 parser.add_argument('--output', help='The file to write to', default='')
 parser.add_argument('--date', help='The file to write to', default='')
 

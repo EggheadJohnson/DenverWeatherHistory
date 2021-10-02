@@ -5,6 +5,7 @@ parser.add_argument('--input', help='File to read in, defaults to denver20192020
 parser.add_argument('--output', help='Optional output file to dump the data into', default='')
 parser.add_argument('--over_temps', help='Comma separated list of temps to calculate first/last time the temperature exceeded', default='90,100')
 parser.add_argument('--under_temps', help='Comma separated list of temps to calculate last/first time the temperature fell below', default='32')
+parser.add_argument('--split_date', help='The date (mm-dd) that should be used to separate the last and first low temp days', default='06-01')
 
 
 args = parser.parse_args()
@@ -64,7 +65,7 @@ def buildDataDictForYearFromDF(year, df):
 # blank_df = buildDataFrame(parseExtrema(args))
 # print(buildDataDictForYearFromDF(2020, blank_df))
 def updateYearDataDict(row, input_extrema, data_dict):
-    june_first = data_dict['year'] + '-06-01'
+    june_first = data_dict['year'] + '-{}'.format(args.split_date)
     for over in input_extrema['overs']:
         if row['TMAX'] >= over:
             if not data_dict['first_over_{}'.format(over)]:
