@@ -1,4 +1,5 @@
-import pandas as pd, argparse
+import pandas as pd, argparse, pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--input', help='File to read in, defaults to denver20192020', default='data/Denver20162020USW00023062.csv')
@@ -91,7 +92,7 @@ def findExtremeTemps():
         curr_year_data_dict = buildDataDictForYearFromDF(year, df_output)
         for index, row in curr_year_df.iterrows():
             curr_year_data_dict = updateYearDataDict(row, input_extrema, curr_year_data_dict)
-        df_output = df_output.append(curr_year_data_dict, ignore_index=True)
+        df_output = pd.concat([df_output, pd.DataFrame([curr_year_data_dict])])
     return df_output
 
 
