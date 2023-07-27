@@ -4,11 +4,11 @@ from math import floor
 pp = pprint.PrettyPrinter(indent=4)
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--input', help='File to read in, defaults to denver20192020', default='data/Denver20112022WithPrecip.csv')
+parser.add_argument('--input', help='File to read in, defaults to data/Denver20112022WithPrecip.csv', default='data/Denver20112022WithPrecip.csv')
 
 args = parser.parse_args()
 
-def loadPandasDF(file_name = 'data/Denver20162020USW00023062.csv'):
+def loadPandasDF(file_name = 'data/Denver20112022WithPrecip.csv'):
     df = pd.read_csv(file_name)
     return df
 
