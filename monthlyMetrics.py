@@ -1,4 +1,4 @@
-# This should allow us to calculate the mean, median, mode, max, and min of the highs and lows for a given month
+# This should allow us to calculate the mean, median, mode, max, and min of the highs and lows for a each month
 import pandas as pd, argparse, pprint, statistics as stats
 from datetime import date
 from math import floor
