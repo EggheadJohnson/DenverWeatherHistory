@@ -9,9 +9,16 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--input', help='File to read in, defaults to data/Denver20112022WithPrecip.csv', default='data/Denver20112022WithPrecip.csv')
 parser.add_argument('--month', help='Which month to analyze, will default to the current month', default='00')
 parser.add_argument('--extreme', help='high or low, high is default', default='high')
+parser.add_argument('--round', help='values are rounded down to multiples of this number', default=1)
 
 
 args = parser.parse_args()
+
+def loadMultiple():
+    round = int(args.round)
+    if round < 1:
+        return 1
+    return round
 
 def loadExtreme():
     if args.extreme not in ('high', 'low'):
@@ -41,10 +48,13 @@ def sliceDataframeToYear(df, year = '2020'):
 def sliceDataframeToMonth(df, month):
     return df[df.DATE.str.contains(month)]
 
+def performRounding(valuesList, multiple):
+    return list(map(lambda x: multiple*(x//multiple), valuesList))
+
 def getValuesAsList(df, highLow):
     if highLow == 'high':
-        return df['TMAX'].tolist()
-    return df['TMIN'].tolist()
+        return performRounding(df['TMAX'].tolist(), loadMultiple())
+    return performRounding(df['TMIN'].tolist(), loadMultiple())
 
 def printMonthlyMetrics(metricsDict):
     print("date\tmax\tmean\tmedian\tmode\tmin")
@@ -66,8 +76,7 @@ def getStatsValues(values, methods):
 def findMonthlyMetrics():
     df_input = filterDFToHaveExtreme(loadPandasDF(args.input))
     resultDict = {}
-    # for month in [ '{:02d}'.format(i) for i in range(1, 13) ]:
-    for dateVal in range(1, monthrange(date.today().year, int(loadMonth()))[1]+1):
+    for dateVal in range(1, monthrange(2020, int(loadMonth()))[1]+1):
         dateValStr = '{:02d}'.format(dateVal)
         dateDf = sliceDataframeToMonth(df_input, '-{}-{}'.format(loadMonth(), dateValStr))
         values = getValuesAsList(dateDf, loadExtreme())
