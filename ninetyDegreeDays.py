@@ -2,7 +2,7 @@ import pandas as pd, argparse, pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--input', help='File to read in, defaults to denver20192020', default='data/Denver20162020USW00023062.csv')
+parser.add_argument('--input', help='File to read in, defaults to data/Denver20112022WithPrecip.csv', default='data/Denver20112022WithPrecip.csv')
 parser.add_argument('--output', help='Optional output file to dump the data into', default='')
 parser.add_argument('--over_temps', help='Comma separated list of temps to calculate first/last time the temperature exceeded', default='90,100')
 parser.add_argument('--under_temps', help='Comma separated list of temps to calculate last/first time the temperature fell below', default='32')

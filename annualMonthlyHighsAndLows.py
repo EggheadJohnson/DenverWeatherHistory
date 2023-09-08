@@ -1,10 +1,12 @@
+# This calculates the high and the low temperatures for each month in the requested years
+
 import pandas as pd, argparse, pprint, statistics as stats
 from datetime import date
 from math import floor
 pp = pprint.PrettyPrinter(indent=4)
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--input', help='File to read in, defaults to denver20192020', default='data/Denver20112022WithPrecip.csv')
+parser.add_argument('--input', help='File to read in, defaults to Denver20112022WithPrecip', default='data/Denver20112022WithPrecip.csv')
 parser.add_argument('--years', help='Which years to display, comma separated', default='2021,2022')
 
 args = parser.parse_args()
