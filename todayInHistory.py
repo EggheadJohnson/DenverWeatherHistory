@@ -25,11 +25,34 @@ def loadDateString():
         return args.date
     return date.today().isoformat()[-6:]
 
+def findExtrema(df):
+    result = {
+        'highHigh': None,
+        'lowHigh': None,
+        'highLow': None,
+        'lowLow': None
+    }
+
+    for row in df.iterrows():
+        if result['highHigh'] is None or row[1]['TMAX'] > result['highHigh'][1]:
+            result['highHigh'] = ( row[1]['DATE'], row[1]['TMAX'])
+        if result['lowHigh'] is None or row[1]['TMAX'] < result['lowHigh'][1]:
+            result['lowHigh'] = ( row[1]['DATE'], row[1]['TMAX'])
+        if result['highLow'] is None or row[1]['TMIN'] > result['highLow'][1]:
+            result['highLow'] = ( row[1]['DATE'], row[1]['TMIN'])
+        if result['lowLow'] is None or row[1]['TMIN'] < result['lowLow'][1]:
+            result['lowLow'] = ( row[1]['DATE'], row[1]['TMIN'])
+    return result
+        
+
+
 def loadTodayInHistory():
     filename = loadFileName()
     df = loadPandasDF(filename)
     dateString = loadDateString()
     df = sliceDataframeToDate(df, dateString)[['DATE', 'TMAX', 'TMIN']]
     print(df)
+    extrema = findExtrema(df)
+    pp.pprint(extrema)
 
 loadTodayInHistory()
